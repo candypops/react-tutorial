@@ -31,7 +31,7 @@ function App () {
         <h1>Cat app</h1>
         <button onClick={handdleClick}>New fact</button>
         {fact && <p>{fact}</p>}
-        {imgURL && <img src={`${imgURL}`} alt='img' />}
+        {imgURL && <img src={imgURL} alt='img' />}
       </main>
     </>
   )
