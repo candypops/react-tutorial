@@ -1,33 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import { getRandomFact } from './services/fact'
+
+const CAT_IMAGE_URL = `https://cataas.com/cat/says/`
+
 
 function App () {
-  const [count, setCount] = useState(0)
+  const [fact, setFact] = useState()
+  const [imgURL, setImgURL] = useState()
+
+  useEffect(() => {
+    getRandomFact().then(newFact => setFact(newFact))
+  }, [])
+
+  //this is so messy. json does not have a url property anymore
+  // useEffect(() => {
+  //   if (!fact) return
+  //   firstWord = fact.split(' ').slice(0, 1).join(' ')
+
+  //   fetch(CAT_IMAGE_URL)
+  //     .then(res => {
+  //       res.json()
+  //     })
+  //     .then(() => {
+  //       setImgURL(CAT_IMAGE_URL)
+  //     })
+  // }, [fact])
+
+  useEffect(() => {
+    if (!fact) return
+    const firstWord = fact.split(' ').slice(0, 1).join(' ')
+
+    setImgURL(`${CAT_IMAGE_URL}${firstWord}`)
+  }, [fact])
+
+  const handdleClick = async () => {
+    const newFact = await getRandomFact()
+    setFact(newFact)
+  }
 
   return (
     <>
-      <div>
-        <a href='https://vitejs.dev' target='_blank' rel="noreferrer">
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank' rel="noreferrer">
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount(count => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
+      <main>
+        <h1>Cat app</h1>
+        <button onClick={handdleClick}>New fact</button>
+        {fact && <p>{fact}</p>}
+        {imgURL && <img src={`${imgURL}`} alt='img' />}
+      </main>
     </>
   )
 }
