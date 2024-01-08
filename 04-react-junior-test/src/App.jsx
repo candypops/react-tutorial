@@ -1,15 +1,27 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { getRandomFact } from './services/fact'
-import { useCatImg } from './hooks/useCatImg';
+import { useCatImg } from './hooks/useCatImg'
+
+function useCatFact () {
+  const [fact, setFact] = useState()
+
+  const refreshFact = () => {
+    getRandomFact().then(newFact => setFact(newFact))
+  }
+
+  useEffect(refreshFact, [])
+
+  return { fact, refreshFact } // en vez de devolver el setFact devolvemos una implementacion
+}
 
 function App () {
-  const [fact, setFact] = useState()
+  const { fact, refreshFact } = useCatFact()
   const { imgURL } = useCatImg({ fact })
 
-  useEffect(() => {
-    getRandomFact().then(newFact => setFact(newFact))
-  }, [])
+  const handdleClick = async () => {
+    refreshFact()
+  }
 
   //this is so messy. json does not have a url property anymore
   // useEffect(() => {
@@ -24,11 +36,6 @@ function App () {
   //       setImgURL(CAT_IMAGE_URL)
   //     })
   // }, [fact])
-
-  const handdleClick = async () => {
-    const newFact = await getRandomFact()
-    setFact(newFact)
-  }
 
   return (
     <>
