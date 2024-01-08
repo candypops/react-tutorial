@@ -1,22 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { getRandomFact } from './services/fact'
-
-const CAT_IMAGE_URL = `https://cataas.com/cat/says/`
-
-
-//custom hook inline
-function useCatImg ({ fact }) {
-  const [imgURL, setImgURL] = useState()
-
-  useEffect(() => {
-    if (!fact) return
-    const firstWord = fact.split(' ').slice(0, 1).join(' ')
-
-    setImgURL(`${CAT_IMAGE_URL}${firstWord}`)
-  }, [fact])
-  return { imgURL }
-}
+import { useCatImg } from './hooks/useCatImg';
 
 function App () {
   const [fact, setFact] = useState()
