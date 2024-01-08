@@ -5,9 +5,22 @@ import { getRandomFact } from './services/fact'
 const CAT_IMAGE_URL = `https://cataas.com/cat/says/`
 
 
+//custom hook inline
+function useCatImg ({ fact }) {
+  const [imgURL, setImgURL] = useState()
+
+  useEffect(() => {
+    if (!fact) return
+    const firstWord = fact.split(' ').slice(0, 1).join(' ')
+
+    setImgURL(`${CAT_IMAGE_URL}${firstWord}`)
+  }, [fact])
+  return { imgURL }
+}
+
 function App () {
   const [fact, setFact] = useState()
-  const [imgURL, setImgURL] = useState()
+  const { imgURL } = useCatImg({ fact })
 
   useEffect(() => {
     getRandomFact().then(newFact => setFact(newFact))
@@ -26,13 +39,6 @@ function App () {
   //       setImgURL(CAT_IMAGE_URL)
   //     })
   // }, [fact])
-
-  useEffect(() => {
-    if (!fact) return
-    const firstWord = fact.split(' ').slice(0, 1).join(' ')
-
-    setImgURL(`${CAT_IMAGE_URL}${firstWord}`)
-  }, [fact])
 
   const handdleClick = async () => {
     const newFact = await getRandomFact()
