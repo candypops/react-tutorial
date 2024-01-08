@@ -1,19 +1,7 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import { getRandomFact } from './services/fact'
 import { useCatImg } from './hooks/useCatImg'
+import { useCatFact } from './hooks/useCatFact';
 
-function useCatFact () {
-  const [fact, setFact] = useState()
-
-  const refreshFact = () => {
-    getRandomFact().then(newFact => setFact(newFact))
-  }
-
-  useEffect(refreshFact, [])
-
-  return { fact, refreshFact } // en vez de devolver el setFact devolvemos una implementacion
-}
 
 function App () {
   const { fact, refreshFact } = useCatFact()
